@@ -54,5 +54,30 @@ namespace AWSSDK_DotNet.IntegrationTests.Tests.S3
                 DestinationKey = testKey
             });
         }
+
+        [TestMethod]
+        [TestCategory("S3")]
+        public void TestCopyObjectLeadingSlash()
+        {
+            string key = "/testLeadingSlashKey.txt";
+            usEastClient.PutObject(new PutObjectRequest
+            {
+                BucketName = eastBucketName,
+                Key = key,
+                ContentBody = testContent
+            });
+            var response = usEastClient.CopyObject(new CopyObjectRequest
+            {
+                SourceBucket = eastBucketName,
+                SourceKey = key,
+                DestinationBucket = westBucketName,
+                DestinationKey = key
+            });
+            var getObjectResponse = usEastClient.GetObject(new GetObjectRequest
+            {
+                BucketName = westBucketName,
+                Key = key
+            });
+        }
     }
 }

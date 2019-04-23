@@ -123,9 +123,7 @@ namespace Amazon.S3.Model.Internal.MarshallTransformations
             if (string.IsNullOrEmpty(copyObjectRequest.DestinationKey))
                 throw new System.ArgumentException("DestinationKey is a required property and must be set before making this call.", "CopyObjectRequest.DestinationKey");
 
-            var destinationKey = copyObjectRequest.DestinationKey.StartsWith("/", StringComparison.Ordinal) 
-                                    ? copyObjectRequest.DestinationKey.Substring(1) 
-                                    : copyObjectRequest.DestinationKey;
+            var destinationKey = copyObjectRequest.DestinationKey;
             request.ResourcePath = string.Format(CultureInfo.InvariantCulture, "/{0}/{1}",
                                                  S3Transforms.ToStringValue(copyObjectRequest.DestinationBucket),
                                                  S3Transforms.ToStringValue(destinationKey));
@@ -141,10 +139,7 @@ namespace Amazon.S3.Model.Internal.MarshallTransformations
             string source;
             if (!String.IsNullOrEmpty(key))
             {
-                var sourceKey = key.StartsWith("/", StringComparison.Ordinal)
-                                        ? key.Substring(1)
-                                        : key;
-                source = AmazonS3Util.UrlEncode(String.Concat("/", bucket, "/", sourceKey), true);
+                source = AmazonS3Util.UrlEncode(String.Concat("/", bucket, "/", key), true);
                 if (!String.IsNullOrEmpty(version))
                 {
                     source = string.Format(CultureInfo.InvariantCulture, "{0}?versionId={1}", source, AmazonS3Util.UrlEncode(version, true));
