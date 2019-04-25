@@ -79,5 +79,28 @@ namespace AWSSDK_DotNet.IntegrationTests.Tests.S3
                 Key = key
             });
         }
+
+        [TestMethod]
+        [TestCategory("S3")]
+        public void TestCopyObjectPercent2F() {
+            string key = "%2Ftest.txt";
+            var putObjectRequest = new PutObjectRequest
+            {
+                BucketName = eastBucketName,
+                Key = key,
+                ContentBody = testContent
+            };
+            var copyObjectRequest = new CopyObjectRequest()
+            {
+                SourceBucket = eastBucketName,
+                SourceKey = key,
+                DestinationKey = key,
+                DestinationBucket = westBucketName
+            };
+
+            usEastClient.PutObject(putObjectRequest);
+
+            usEastClient.CopyObject(copyObjectRequest);
+        }
     }
 }
